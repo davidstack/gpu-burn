@@ -208,8 +208,11 @@ template <class T> class GPU_Test {
 		static const float beta = 0.0f;
 		static const double alphaD = 1.0;
 		static const double betaD = 0.0;
-
-		for (size_t i = 0; i < d_iters; ++i) {
+                int sleepTime[7]={0,0,0,2500,5000,10000,20000};
+                            //cpu={100%,80%,40%,20%,10%}
+                for (int j = 0; j < 7; j++) {
+                   for(long k=0; k<10; k++) {
+                     for (size_t i = 0; i < d_iters; ++i) {
 			if (d_doubles)
 				checkError(cublasDgemm(d_cublas, CUBLAS_OP_N, CUBLAS_OP_N,
 							SIZE, SIZE, SIZE, &alphaD,
@@ -225,7 +228,7 @@ template <class T> class GPU_Test {
 							&beta, 
 							(float*)d_Cdata + i*SIZE*SIZE, SIZE), "SGEMM");
 		}
-	}
+	}}}
 
 	void initCompareKernel() {
 		const char *kernelFile = "compare.ptx";
